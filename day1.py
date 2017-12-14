@@ -4,8 +4,16 @@ import click
 
 
 @click.command()
-@click.argument('input_string', type=str)
-def main(input_string):
+@click.argument('part', type=int, default=1)
+@click.argument('input_file', type=click.Path(exists=True))
+def main(part, input_file):
+    return {
+        1: part1
+    }[part](input_file)
+
+
+def part1(input_file):
+    input_string = open(input_file, 'r').read().strip()
     digits = [int(num) for num in list(input_string)]
 
     digits.append(digits[0])
