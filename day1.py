@@ -2,6 +2,7 @@
 
 import click
 
+
 @click.command()
 @click.argument('input_string', type=str)
 def main(input_string):
