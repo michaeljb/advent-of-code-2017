@@ -6,58 +6,49 @@ import click
 
 
 @click.command()
-@click.argument('part', type=int)
 @click.argument('input_file', type=click.Path(exists=True))
-def main(part, input_file):
-    return {
-        1: part1,
-        2: part2
-    }[part](input_file)
+def cli(input_file):
+    the_input = parse_input(input_file)
+
+    print(part1(the_input))
+    print(part2(the_input))
 
 
-def part1(input_file):
+def parse_input(input_file):
     txt = open(input_file, 'r').read().strip()
 
     lines = txt.split('\n')
 
-    checksum = 0
-
-    for line in lines:
-        if len(line) == 0:
-            continue
-        numbers = [int(num) for num in re.split('\s+', line)]
-
-        checksum += max(numbers) - min(numbers)
-
-    print(checksum)
+    return [[int(num) for num in re.split('\s+', line)] for line in lines]
 
 
-def part2(input_file):
-    def checksum_for_line(line):
-        numbers = [int(num) for num in re.split('\s+', line)]
-        numbers = sorted(numbers)
+def part1(lines):
+    def checksum_func(line):
+        return max(line) - min(line)
 
+    return sum_all_lines(lines, checksum_func)
+
+
+def part2(lines):
+    def checksum_func(line):
+        numbers = sorted(line)
         numbers_reversed = numbers[::-1]
 
         for divisor in numbers:
-            smallest_dividend_candidate = 2 * divisor
-            for dividend in numbers_reversed:
-                if dividend < smallest_dividend_candidate:
-                    continue
+            smallest_dividend = 2 * divisor
+            for dividend in (n for n in numbers_reversed if n >= smallest_dividend):
                 quotient = dividend / divisor
                 if quotient == int(quotient):
-                    return quotient
+                    return int(quotient)
 
-    txt = open(input_file, 'r').read().strip()
+        return 0
 
-    lines = txt.split('\n')
+    return sum_all_lines(lines, checksum_func)
 
-    checksum = 0
 
-    for line in lines:
-        checksum += checksum_for_line(line)
+def sum_all_lines(lines, checksum_func):
+    return sum(checksum_func(line) for line in lines)
 
-    print(int(checksum))
 
 if __name__ == '__main__':
-    main()
+    cli()
