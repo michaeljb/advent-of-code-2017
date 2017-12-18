@@ -28,11 +28,46 @@ def part2(the_input):
 
 
 def main(the_input):
+    left = (-1, 0)
+    right = (1, 0)
+    down = (0, -1)
+    up = (0, 1)
+
     num = the_input
 
     odd_num = get_odd_num(num)
 
-    return odd_num
+    top_right, top_left, bottom_left, bottom_right = get_corners(odd_num)
+
+    steps_to_square = []
+
+    steps_to_square += [right] * max((bottom_right - max(num, bottom_left)), 0)
+    steps_to_square += [down] * max((bottom_left - max(num, top_left)), 0)
+    steps_to_square += [left] * max((top_left - max(num, top_right)), 0)
+    steps_to_square += [up] * max((top_right - num), 0)
+
+    steps_from_square = steps_from_odd_square(odd_num)
+
+    steps_to_one = steps_to_square + steps_from_square
+
+    total_steps_to_one = [0, 0]
+    for x, y in steps_to_one:
+        total_steps_to_one[0] += x
+        total_steps_to_one[1] += y
+
+    total_steps = sum(abs(steps) for steps in total_steps_to_one)
+
+    return total_steps
+
+
+def steps_from_odd_square(odd_num):
+    left = (-1, 0)
+    up = (0, 1)
+
+    if odd_num == 1:
+        return []
+    else:
+        return [left, up] + steps_from_odd_square(odd_num - 2)
 
 
 # return smallest odd integer such that the square of that integer is greater
@@ -45,6 +80,18 @@ def get_odd_num(num):
         the_num += 1
 
     return the_num
+
+
+# list of numbers
+# top_right, top_left, bottom_left, bottom_right
+def get_corners(num):
+    top_left = (num ** 2) - (2*num) + 2
+    top_right = (num ** 2) - (3*num) + 3
+    bottom_left = (num ** 2) - num + 1
+    bottom_right = num ** 2
+
+    return [top_right, top_left, bottom_left, bottom_right]
+
 
 
 if __name__ == '__main__':
