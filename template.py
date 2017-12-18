@@ -21,6 +21,7 @@ def part1(the_input):
 
 
 def part2(the_input):
+    exit(0)  # don't show part 2 output until part 2 is implemented
     return main(the_input)
 
 
