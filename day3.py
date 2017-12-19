@@ -62,7 +62,7 @@ def part2(the_input):
     the_grid[5][5] = 1
 
     def next_index(x, y):
-        print('\nx, y = ', (x,y))
+        #print('\nx, y = ', (x,y))
 
         offset = -5
 
@@ -103,7 +103,7 @@ def part2(the_input):
 
         the_next = (the_next[0] - offset, the_next[1] - offset)
 
-        print('the_next = ', the_next)
+        #print('the_next = ', the_next)
 
         return the_next
 
@@ -130,8 +130,8 @@ def part2(the_input):
         x, y = current_index
         the_grid[x][y] = new_value
 
-    from pprint import pprint
-    pprint(the_grid)
+#    from pprint import pprint
+#    pprint(the_grid)
 
     return new_value
 
