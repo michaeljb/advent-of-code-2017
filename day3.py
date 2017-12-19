@@ -52,12 +52,88 @@ def part1(the_input):
 
 
 def part2(the_input):
-    exit(0)
-    return main(the_input)
+    LEFT = (0, -1)
+    RIGHT = (0, 1)
+    DOWN = (1, 0)
+    UP = (-1, 0)
 
+    the_grid = [[0 for x in range(11)] for y in range(11)]
 
-def main(the_input):
-    return
+    the_grid[5][5] = 1
+
+    def next_index(x, y):
+        print('\nx, y = ', (x,y))
+
+        offset = -5
+
+        # set origin to 0,0
+        x = x + offset
+        y = y + offset
+
+        # layer 0, 1, 2, etc?
+        N = max(abs(coord) for coord in (x, y))
+
+        on_bottom = x == N
+        on_right = y == N
+        on_top = x == -N
+        on_left = y == -N
+
+        # print('N:', N)
+        # print('x,y', (x,y))
+
+        # print('on_bottom', on_bottom)
+        # print('on_right', on_right)
+        # print('on_top', on_top)
+        # print('on_left', on_left)
+
+        # order of these ifs *matters*
+        if on_bottom:
+            direction = RIGHT
+
+        elif on_left:
+            direction = DOWN
+
+        elif on_top:
+            direction = LEFT
+
+        elif on_right:
+            direction = UP
+
+        the_next = (x + direction[0], y + direction[1])
+
+        the_next = (the_next[0] - offset, the_next[1] - offset)
+
+        print('the_next = ', the_next)
+
+        return the_next
+
+    def surrounding_indices(x, y):
+        return [
+            (x - 1, y - 1),
+            (x - 1, y),
+            (x - 1, y + 1),
+            (x, y + 1),
+            (x + 1, y + 1),
+            (x + 1, y),
+            (x + 1, y - 1),
+            (x, y - 1)
+        ]
+
+    def surrounding_sum(x, y):
+        return sum(the_grid[x][y] for x, y in surrounding_indices(x, y))
+
+    current_index = (5, 5)
+    new_value = 0
+    while new_value <= the_input:
+        current_index = next_index(*current_index)
+        new_value = surrounding_sum(*current_index)
+        x, y = current_index
+        the_grid[x][y] = new_value
+
+    from pprint import pprint
+    pprint(the_grid)
+
+    return new_value
 
 
 def steps_from_odd_square(odd_num):
@@ -85,8 +161,8 @@ def get_odd_num(num):
 # list of numbers
 # top_right, top_left, bottom_left, bottom_right
 def get_corners(num):
-    top_left = (num ** 2) - (2*num) + 2
     top_right = (num ** 2) - (3*num) + 3
+    top_left = (num ** 2) - (2*num) + 2
     bottom_left = (num ** 2) - num + 1
     bottom_right = num ** 2
 
