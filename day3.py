@@ -19,15 +19,6 @@ def parse_input(input_file):
 
 
 def part1(the_input):
-    return main(the_input)
-
-
-def part2(the_input):
-    exit(0)
-    return main(the_input)
-
-
-def main(the_input):
     left = (-1, 0)
     right = (1, 0)
     down = (0, -1)
@@ -58,6 +49,15 @@ def main(the_input):
     total_steps = sum(abs(steps) for steps in total_steps_to_one)
 
     return total_steps
+
+
+def part2(the_input):
+    exit(0)
+    return main(the_input)
+
+
+def main(the_input):
+    return
 
 
 def steps_from_odd_square(odd_num):
