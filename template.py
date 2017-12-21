@@ -17,15 +17,11 @@ def parse_input(input_file):
 
 
 def part1(the_input):
-    return main(the_input)
+    return
 
 
 def part2(the_input):
     exit(0)  # don't show part 2 output until part 2 is implemented
-    return main(the_input)
-
-
-def main(the_input):
     return
 
 
