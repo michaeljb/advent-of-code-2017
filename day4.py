@@ -16,13 +16,18 @@ def parse_input(input_file):
     return open(input_file, 'r').read().strip().split('\n')
 
 
+def main(the_input, valid_passphrase_func):
+    return len([p for p in the_input if valid_passphrase_func(p)])
+
+
 def part1(the_input):
-    valid_passphrases = [p for p in the_input if is_passphrase_valid(p)]
+    def is_passphrase_valid(passphrase):
+        return words_all_unique(passphrase)
 
-    return len(valid_passphrases)
+    return main(the_input, is_passphrase_valid)
 
 
-def is_passphrase_valid(passphrase):
+def words_all_unique(passphrase):
     words = passphrase.split(' ')
 
     word_count = len(words)
@@ -32,9 +37,22 @@ def is_passphrase_valid(passphrase):
     return unique_word_count == word_count
 
 
+def no_anagrams(passphrase):
+    words = passphrase.split(' ')
+
+    words_with_chars_sorted = [tuple(sorted(word)) for word in words]
+
+    num_anagrams = len(words) - len(set(words_with_chars_sorted))
+
+    return num_anagrams == 0
+
+
+
 def part2(the_input):
-    exit(0)  # don't show part 2 output until part 2 is implemented
-    return
+    def is_passphrase_valid(passphrase):
+        return words_all_unique(passphrase) and no_anagrams(passphrase)
+
+    return main(the_input, is_passphrase_valid)
 
 
 if __name__ == '__main__':
